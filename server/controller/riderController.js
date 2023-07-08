@@ -2,11 +2,41 @@ const { Long } = require("mongodb");
 const Rider = require("../models/riderModel");
 const cloudinary = require("../utils/cloudinary");
 const fs = require("fs");
-const { findByIdAndUpdate } = require("../models/riderModel");
 
 const getAllRiders = async (req, res) => {
-    const riders = await Rider.find({}).exec();
-    res.status(200).json(riders)
+    const { page = 1, limit = 5, Name, Email, Id } = req.query;
+    const query = {};
+
+    if (Name) {
+        query.Name = { $regex: Name, $options: "i" };
+    }
+
+    if (Email) {
+        query.Email = { $regex: Email, $options: "i" };
+    }
+
+    if (Id) {
+        query.Id = Id;
+    }
+
+    try {
+        const options = {
+            page: parseInt(page),
+            limit: parseInt(limit),
+        };
+
+        const riders = await Rider.find(query)
+            .sort({ Id: 1 }) // Sort in ascending order by Id
+            .skip((options.page - 1) * options.limit)
+            .limit(options.limit)
+            .exec();
+
+        res.status(200).json(riders);
+    } catch (error) {
+        res.status(500).json({ error: "An error occurred while searching for riders." });
+    }
+    // const riders = await Rider.find({}).exec();
+    // res.status(200).json(riders)
 }
 const addRider = async (req, res) => {
     try {
@@ -32,40 +62,40 @@ const addRider = async (req, res) => {
 }
 const editRider = async (req, res) => {
     try {
-      let rider = await Rider.findById(req.params.id).exec();
-  
-      // delete the image from the cloudinary
-      await cloudinary.uploader.destroy(rider.cloudinary_id);
-  
-      let result;
-      if (req.file) {
-        result = await cloudinary.uploader.upload(req.file.path);
-      }
-  
-      const data = {
-        Id: parseInt(req.body.Id), // Parse the Id value as an integer
-        Name: req.body.Name || rider.Name,
-        Email: req.body.Email || rider.Email,
-        Position: req.body.Position || rider.Position,
-        NRIC: req.body.NRIC || rider.NRIC,
-        Status: req.body.Status || rider.Status,
-        Image: result?.secure_url || rider.Image,
-        cloudinary_id: result?.public_id || rider.cloudinary_id,
-      };
-  
-      rider = await Rider.findByIdAndUpdate(req.params.id, data, { new: true });
-  
-      if (req.file) {
-        fs.unlinkSync(req.file.path);
-      }
-  
-      res.status(200).json(rider);
+        let rider = await Rider.findById(req.params.id).exec();
+
+        // delete the image from the cloudinary
+        await cloudinary.uploader.destroy(rider.cloudinary_id);
+
+        let result;
+        if (req.file) {
+            result = await cloudinary.uploader.upload(req.file.path);
+        }
+
+        const data = {
+            Id: parseInt(req.body.Id), // Parse the Id value as an integer
+            Name: req.body.Name || rider.Name,
+            Email: req.body.Email || rider.Email,
+            Position: req.body.Position || rider.Position,
+            NRIC: req.body.NRIC || rider.NRIC,
+            Status: req.body.Status || rider.Status,
+            Image: result?.secure_url || rider.Image,
+            cloudinary_id: result?.public_id || rider.cloudinary_id,
+        };
+
+        rider = await Rider.findByIdAndUpdate(req.params.id, data, { new: true });
+
+        if (req.file) {
+            fs.unlinkSync(req.file.path);
+        }
+
+        res.status(200).json(rider);
     } catch (error) {
-      console.log(error);
+        console.log(error);
     }
-  };
-  
-const deleteRider = async(req, res) => {
+};
+
+const deleteRider = async (req, res) => {
     let rider = await Rider.findById(req.params.id).exec();
     // delete the image from the cloudinary
     await cloudinary.uploader.destroy(rider.cloudinary_id);
@@ -73,7 +103,7 @@ const deleteRider = async(req, res) => {
     res.status(200).json(`Rider with the name of ${rider.Name} was deleted sucessfully`)
 };
 
-const getSingleRider = async(req, res) => {
+const getSingleRider = async (req, res) => {
     try {
         let rider = await Rider.findById(req.params.id).exec();
         res.status(200).json(rider)

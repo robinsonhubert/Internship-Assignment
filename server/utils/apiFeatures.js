@@ -1,28 +1,32 @@
-class ApiFeatures{
-    constructor(query,queryStr){
-        this.query=query;
-        this.queryStr=queryStr;
+class ApiFeatures {
+    constructor(query, queryStr) {
+        this.query = query;
+        this.queryStr = queryStr;
     }
 
-    search(){
-        const keyword=this.queryStr.keyword ? {
-            title:{
-                $regex:this.queryStr.keyword,
-                $options:'i'
+    search() {
+        const keyword = this.queryStr.keyword
+            ? {
+                $or: [
+                    { Name: { $regex: this.queryStr.keyword, $options: 'i' } },
+                    { Email: { $regex: this.queryStr.keyword, $options: 'i' } },
+                    { Id: Number(this.queryStr.keyword) },
+                ],
             }
-        } :{};
-        this.query=this.query.find({...keyword});
+            : {};
+
+        this.query = this.query.find({ ...keyword });
         return this;
     }
 
-    pagination(resultPerPage){
-        const currentPage=Number(this.queryStr.page) || 1;
-        const skip=resultPerPage*(currentPage - 1);
-        this.query=this.query.limit(resultPerPage).skip(skip);
+    pagination(resultPerPage) {
+        const currentPage = Number(this.queryStr.page) || 1;
+        const skip = resultPerPage * (currentPage - 1);
+        this.query = this.query.limit(resultPerPage).skip(skip);
         return this;
     }
 
-    
+
 }
 
-module.exports=ApiFeatures;
+module.exports = ApiFeatures;
