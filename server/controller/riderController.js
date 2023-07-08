@@ -26,7 +26,7 @@ const getAllRiders = async (req, res) => {
         };
 
         const riders = await Rider.find(query)
-            .sort({ Id: 1 }) // Sort in ascending order by Id
+            .sort({ Id: 1 }) 
             .skip((options.page - 1) * options.limit)
             .limit(options.limit)
             .exec();
@@ -96,12 +96,29 @@ const editRider = async (req, res) => {
 };
 
 const deleteRider = async (req, res) => {
-    let rider = await Rider.findById(req.params.id).exec();
-    // delete the image from the cloudinary
-    await cloudinary.uploader.destroy(rider.cloudinary_id);
-    await rider.remove();
-    res.status(200).json(`Rider with the name of ${rider.Name} was deleted sucessfully`)
+    try {
+        const riderId = req.params.id;
+        const rider = await Rider.findById(riderId);
+
+        if (!rider) {
+            return res.status(404).json({ error: 'Rider not found' });
+        }
+
+        // Delete the rider's image from Cloudinary
+        await cloudinary.uploader.destroy(rider.cloudinary_id);
+
+        // Remove the rider from the database
+        await Rider.findByIdAndRemove(riderId);
+
+        res.status(200).json(`Rider with the name ${rider.Name} was deleted successfully`);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'An error occurred while deleting the rider' });
+    }
 };
+
+module.exports = { deleteRider };
+
 
 const getSingleRider = async (req, res) => {
     try {

@@ -8,6 +8,7 @@ import AllRiders from './components/AllRiders';
 import AddRider from './components/AddRider';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import EditRider from './components/EditRider';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path='/'element={<Home />} />
         <Route path='/all' element={<AllRiders />} />
         <Route path='/add' element={<AddRider />} />
+        <Route path='/edit/:id' element={<EditRider/>}/>
       </Routes>
     </BrowserRouter>
   );
