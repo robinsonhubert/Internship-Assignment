@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.css';
 
 //components
@@ -6,9 +6,8 @@ import NavBar from './components/NavBar';
 import Home from './components/Home';
 import AllRiders from './components/AllRiders';
 import AddRider from './components/AddRider';
-
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import EditRider from './components/EditRider';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -20,6 +19,7 @@ function App() {
         <Route path='/add' element={<AddRider />} />
         <Route path='/edit/:id' element={<EditRider/>}/>
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }

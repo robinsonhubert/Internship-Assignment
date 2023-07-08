@@ -2,28 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom'
 import axios from "axios";
 import { BASEURL } from '../constants/BaseUrl';
-import { Table, TableBody, TableCell, TableHead, TableRow, styled, Typography, Container, Button, TextField } from "@mui/material";
+import { styled, Typography, Container, Button, TextField } from "@mui/material";
 import { Image } from 'mui-image'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 
-const StyleTable = styled(Table)`
-    // width: 90%;
-    margin:5% auto 0 auto;
-`
-const THead = styled(TableRow)`
-    background: #000;
-    & > th {
-        color: #fff;
-        font-size:22px;
 
-    }
-`
-const TBody = styled(TableRow)`
-    & > td {
-        font-size:20px;
-    }
-`
 const Btn = styled(Button)`
     background: transparant;
     height:10px;
@@ -121,7 +105,7 @@ const AllRiders = () => {
 
     const handleNextPage = () => {
         setCurrentPage((prevPage) => prevPage + 1);
-        
+
     };
 
 
@@ -138,45 +122,49 @@ const AllRiders = () => {
                     variant="outlined"
                     margin="normal"
                 />
-                <Button variant="contained" onClick={handleSearch} sx={{margin:'25px 10px '}}>
+                <Button variant="contained" onClick={handleSearch} sx={{ margin: '25px 10px ' }}>
                     Search
                 </Button>
-                <StyleTable>
-                    <TableHead>
-                        <THead>
-                            <TableCell>Id</TableCell>
-                            <TableCell>Name</TableCell>
-                            <TableCell>Email</TableCell>
-                            <TableCell>Position</TableCell>
-                            <TableCell>Status</TableCell>
-                            <TableCell>NRIC</TableCell>
-                            <TableCell>Image</TableCell>
-                            <TableCell>Actions</TableCell>
-                        </THead>
-                    </TableHead>
-                    <TableBody>
-                        {riders.map((rider) => (
-                            <TBody>
-                                <TableCell>{rider.Id}</TableCell>
-                                <TableCell>{rider.Name}</TableCell>
-                                <TableCell>{rider.Email}</TableCell>
-                                <TableCell>{rider.Position}</TableCell>
-                                <TableCell>{getStatusLabel(rider.Status)}</TableCell>
-                                <TableCell>{rider.NRIC}</TableCell>
-                                <TableCell><Image src={rider.Image} style={{ width: 100, height: 100 }} /></TableCell>
-                                <TableCell>
-                                    <Btn component={Link} to={`/edit/${rider._id}`}><EditIcon style={{ color: 'green' }} /></Btn>
-                                    <Btn onClick={() => deleteRider(rider._id)}><DeleteForeverIcon style={{ color: 'red' }} /></Btn>
-                                </TableCell>
-                            </TBody>
-                        ))}
-                    </TableBody>
-                </StyleTable>
+                <div className="responsive-table">
+                    <table>
+                        <thead >
+                            <tr>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Position</th>
+                                <th>Status</th>
+                                <th>NRIC</th>
+                                <th>Image</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {riders.map((rider) => (
+                                <tr>
+                                    <td>{rider.Id}</td>
+                                    <td>{rider.Name}</td>
+                                    <td>{rider.Email}</td>
+                                    <td>{rider.Position}</td>
+                                    <td>{getStatusLabel(rider.Status)}</td>
+                                    <td>{rider.NRIC}</td>
+                                    <td><Image src={rider.Image} style={{ width: 100, height: 100 }} /></td>
+                                    <td>
+                                        <Btn component={Link} to={`/edit/${rider._id}`}><EditIcon style={{ color: 'green' }} /></Btn>
+                                        <Btn onClick={() => deleteRider(rider._id)}><DeleteForeverIcon style={{ color: 'red' }} /></Btn>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+
+
                 <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-                    <Button variant="contained" onClick={handlePreviousPage} disabled={currentPage === 1} sx={{margin:'10px'}}>
+                    <Button variant="contained" onClick={handlePreviousPage} disabled={currentPage === 1} sx={{ margin: '10px' }}>
                         Previous Page
                     </Button>
-                    <Button variant="contained" onClick={handleNextPage} disabled={isLoading} sx={{margin:'10px'}}>
+                    <Button variant="contained" onClick={handleNextPage} disabled={isLoading} sx={{ margin: '10px' }}>
                         {isLoading ? 'Loading...' : 'Next Page'}
                     </Button>
                 </div>
