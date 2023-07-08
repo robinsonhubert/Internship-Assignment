@@ -4,7 +4,7 @@ const cloudinary = require("../utils/cloudinary");
 const fs = require("fs");
 
 const getAllRiders = async (req, res) => {
-    const { page = 1, limit = 5, Name, Email, Id } = req.query;
+    const { page = 1, limit = 10, Name, Email, Id } = req.query;
     const query = {};
 
     if (Name) {
