@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { BASEURL } from '../constants/BaseUrl';
-import { Table, TableBody, TableCell, TableHead, TableRow, styled, Typography, Container } from "@mui/material";
+import { Table, TableBody, TableCell, TableHead, TableRow, styled, Typography, Container, Button } from "@mui/material";
 import { Image } from 'mui-image'
-
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import EditIcon from '@mui/icons-material/Edit';
 
 const StyleTable = styled(Table)`
     width: 90%;
-    margin: 50px auto 0 auto;
+    margin:5% auto 0 auto;
 `
 const THead = styled(TableRow)`
     background: #000;
@@ -19,6 +20,11 @@ const TBody = styled(TableRow)`
     & > td {
         font-size:20px;
     }
+`
+const Btn = styled(Button)`
+    background: transparant;
+    height:10px;
+    width:10px;
 `
 
 
@@ -45,9 +51,9 @@ const AllRiders = () => {
     };
 
     return (
-        <div>
+        <>
             <Container>
-            <Typography variant="h4" align="center" style={{paddingTop:'40px'}}>Add Rider</Typography>
+            <Typography variant="h4" align="center" style={{paddingTop:'40px'}}>All Riders List</Typography>
             <StyleTable>
                 <TableHead>
                     <THead>
@@ -58,6 +64,7 @@ const AllRiders = () => {
                         <TableCell>Status</TableCell>
                         <TableCell>NRIC</TableCell>
                         <TableCell>Image</TableCell>
+                        <TableCell>Actions</TableCell>
                     </THead>
                 </TableHead>
                 <TableBody>
@@ -70,12 +77,16 @@ const AllRiders = () => {
                             <TableCell>{getStatusLabel(rider.Status)}</TableCell>
                             <TableCell>{rider.NRIC}</TableCell>
                             <TableCell><Image src={rider.Image} style={{width: 100, height: 100}}/></TableCell>
+                            <TableCell>
+                            <Btn><EditIcon style={{color:'green'}}/></Btn>
+                            <Btn><DeleteForeverIcon style={{color:'red'}}/></Btn>
+                            </TableCell>
                         </TBody>
                     ))}
                 </TableBody>
             </StyleTable>
-            </Container>
-        </div>
+            </Container> 
+        </>
     );
 };
 

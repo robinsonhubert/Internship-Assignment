@@ -6,9 +6,9 @@ import { FormControl, FormGroup, InputLabel, Input, Button, Typography, styled }
 
 const Container = styled(FormGroup)`
     width:50%;
-    margin:5% auto 0 auto;
+    margin:2% auto 0 auto;
     & > div{
-        margin-top:20px;
+        margin-top:30px;
     }
 `
 
@@ -75,7 +75,7 @@ const AddRider = () => {
     return (
         <form onSubmit={handleFormSubmit}>
             <Container>
-                <Typography variant="h4">Add Rider</Typography>
+                <Typography variant="h4"  align="center">Add Rider</Typography>
                 <FormControl>
                     <InputLabel>Id:</InputLabel>
                     <Input name="Id" value={riderData.Id} onChange={handleInputChange} />
