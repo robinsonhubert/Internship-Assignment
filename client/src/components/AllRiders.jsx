@@ -6,7 +6,7 @@ import { styled, Typography, Container, Button, TextField } from "@mui/material"
 import { Image } from 'mui-image'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
-
+import Loader from "../Loader/Loader";
 
 const Btn = styled(Button)`
     background: transparant;
@@ -19,7 +19,7 @@ const AllRiders = () => {
     const [riders, setRiders] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const [isLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
 
     useEffect(() => {
@@ -32,6 +32,8 @@ const AllRiders = () => {
     //Axios Connecting the get backend method with frontend
     const getAllRiders = async (page) => {
         try {
+            setIsLoading(true); // Start the loader
+
             const response = await axios.get(`${BASEURL}/api/v1`, {
                 params: {
                     page: currentPage, // Use the current page value
@@ -41,7 +43,10 @@ const AllRiders = () => {
             });
 
             if (response.status === 200) {
-                setRiders(response.data);
+                setTimeout(() => {
+                    setRiders(response.data);
+                    setIsLoading(false); // Stop the loader after a delay
+                }, 2000); // Adjust the delay time as needed
             }
         } catch (error) {
             console.error("Error retrieving riders:", error);
@@ -54,12 +59,18 @@ const AllRiders = () => {
     //Axios Connecting the delete backend method with frontend
     const deleteRider = async (id) => {
         try {
+            setIsLoading(true); // Start the loader
+
             const response = await axios.delete(`${BASEURL}/api/v1/${id}`);
 
             if (response.status === 200) {
+                setTimeout(() => {
+
                 // Remove the deleted rider from the state
                 setRiders(prevRiders => prevRiders.filter(rider => rider._id !== id));
-            }
+                setIsLoading(false); // Stop the loader after a delay
+            }, 2000); // Adjust the delay time as needed
+        }
         } catch (error) {
             console.error("Error deleting rider:", error);
         }
@@ -140,22 +151,37 @@ const AllRiders = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {riders.map((rider) => (
+                            {isLoading ? (
                                 <tr>
-                                    <td>{rider.Id}</td>
-                                    <td>{rider.Name}</td>
-                                    <td>{rider.Email}</td>
-                                    <td>{rider.Position}</td>
-                                    <td>{getStatusLabel(rider.Status)}</td>
-                                    <td>{rider.NRIC}</td>
-                                    <td><Image src={rider.Image} style={{ width: 100, height: 100 }} /></td>
-                                    <td>
-                                        <Btn component={Link} to={`/edit/${rider._id}`}><EditIcon style={{ color: 'green' }} /></Btn>
-                                        <Btn onClick={() => deleteRider(rider._id)}><DeleteForeverIcon style={{ color: 'red' }} /></Btn>
+                                    <td colSpan="8">
+                                        <Loader />
                                     </td>
                                 </tr>
-                            ))}
+                            ) : (
+                                riders.map((rider) => (
+                                    <tr key={rider._id}>
+                                        <td>{rider.Id}</td>
+                                        <td>{rider.Name}</td>
+                                        <td>{rider.Email}</td>
+                                        <td>{rider.Position}</td>
+                                        <td>{getStatusLabel(rider.Status)}</td>
+                                        <td>{rider.NRIC}</td>
+                                        <td>
+                                            <Image src={rider.Image} style={{ width: 100, height: 100 }} />
+                                        </td>
+                                        <td>
+                                            <Btn component={Link} to={`/edit/${rider._id}`}>
+                                                <EditIcon style={{ color: 'green' }} />
+                                            </Btn>
+                                            <Btn onClick={() => deleteRider(rider._id)}>
+                                                <DeleteForeverIcon style={{ color: 'red' }} />
+                                            </Btn>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
+
                     </table>
                 </div>
 

@@ -108,7 +108,7 @@ const AddRider = () => {
                 </FormControl>
                 {riderData.Image && (
                     <FormControl>
-                        <Image src={URL.createObjectURL(riderData.Image)} alt="Uploaded Image" style={{ width: '100px',width:'100px', marginTop: '10px' }} />
+                        <Image src={URL.createObjectURL(riderData.Image)} alt="Uploaded Image" style={{ width: '100px',height:'100px', marginTop: '10px' }} />
                     </FormControl>
                 )}
                 <FormControl>
