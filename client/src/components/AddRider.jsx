@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
-import {BASEURL} from '../constants/BaseUrl';
+import { BASEURL } from '../constants/BaseUrl';
 import { useNavigate } from "react-router-dom";
 import { FormControl, FormGroup, InputLabel, Input, Button, Typography, styled } from "@mui/material";
+import { Image } from 'mui-image'
+
 
 const Container = styled(FormGroup)`
-    width:50%;
-    margin:2% auto 0 auto;
-    & > div{
-        margin-top:30px;
+    width: 50%;
+    margin: 2% auto 0 auto;
+    & > div {
+        margin-top: 30px;
     }
 `
 
@@ -23,7 +25,7 @@ const AddRider = () => {
         Image: null,
     });
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const handleInputChange = (event) => {
         if (event.target.name === "Image") {
@@ -53,6 +55,7 @@ const AddRider = () => {
             });
 
             if (response.status === 201) {
+                navigate('/all');
                 // Rider added successfully
                 console.log("Rider added:", response.data);
                 // Reset the form inputs
@@ -66,16 +69,16 @@ const AddRider = () => {
                     Image: null,
                 });
             }
-            navigate('/all');
+            
         } catch (error) {
             console.error("Error adding rider:", error);
         }
     };
 
     return (
-        <form onSubmit={handleFormSubmit}>
+        <form>
             <Container>
-                <Typography variant="h4"  align="center">Add Rider</Typography>
+                <Typography variant="h4" align="center">Add Rider</Typography>
                 <FormControl>
                     <InputLabel>Id:</InputLabel>
                     <Input name="Id" value={riderData.Id} onChange={handleInputChange} />
@@ -103,8 +106,13 @@ const AddRider = () => {
                 <FormControl>
                     <Input accept="image/*" multiple type="file" name="Image" onChange={handleInputChange} />
                 </FormControl>
+                {riderData.Image && (
+                    <FormControl>
+                        <Image src={URL.createObjectURL(riderData.Image)} alt="Uploaded Image" style={{ width: '100px',width:'100px', marginTop: '10px' }} />
+                    </FormControl>
+                )}
                 <FormControl>
-                    <Button variant="contained" type="submit">Add Rider</Button>
+                    <Button variant="contained"  onClick={handleFormSubmit}>Add Rider</Button>
                 </FormControl>
             </Container>
         </form>

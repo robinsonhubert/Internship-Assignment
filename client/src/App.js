@@ -13,14 +13,17 @@ function App() {
   return (
     <BrowserRouter>
       <NavBar />
-      <Routes>
-        <Route path='/'element={<Home />} />
-        <Route path='/all' element={<AllRiders />} />
-        <Route path='/add' element={<AddRider />} />
-        <Route path='/edit/:id' element={<EditRider/>}/>
-      </Routes>
+      <div style={{ marginBottom: '150px' }}>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/all' element={<AllRiders />} />
+          <Route path='/add' element={<AddRider />} />
+          <Route path='/edit/:id' element={<EditRider />} />
+        </Routes>
+      </div>
       <Footer />
     </BrowserRouter>
+
   );
 }
 
