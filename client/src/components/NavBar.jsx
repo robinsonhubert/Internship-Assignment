@@ -21,8 +21,8 @@ const NavBar = () => {
         <Header position='static'>
             <Toolbar>
                 <Tabs to='/' style={{fontSize: '1.2rem' }}>Rider App</Tabs>
-                <Tabs to='/all' style={{marginLeft:'auto'}}><PlaylistAddCheckCircleOutlinedIcon style={{ fontSize: '1.2rem' }} />All Riders List</Tabs>
-                <Tabs to='/add'><PlaylistAddCircleOutlinedIcon style={{ fontSize: '1.2rem' }} /> Add Riders</Tabs>
+                {/* <Tabs to='/all' style={{marginLeft:'auto'}}><PlaylistAddCheckCircleOutlinedIcon style={{ fontSize: '1.2rem' }} />All Riders List</Tabs> */}
+                <Tabs to='/add' style={{marginLeft:'auto'}}><PlaylistAddCircleOutlinedIcon style={{ fontSize: '1.2rem' }} /> Add Riders</Tabs>
             </Toolbar>
         </Header>
     )

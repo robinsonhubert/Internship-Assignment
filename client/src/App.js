@@ -27,13 +27,13 @@ function App() {
   return (
     <BrowserRouter>
       <NavBar />
-      <div style={{ marginBottom: '150px' }}>
+      <div style={{ marginBottom: '150px' }} className="background">
         {isLoading ? (
           <Loader />
         ) : (
           <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/all' element={<AllRiders />} />
+            <Route path='/' element={<AllRiders />} />
+            {/* <Route path='/all' element={<AllRiders />} /> */}
             <Route path='/add' element={<AddRider />} />
             <Route path='/edit/:id' element={<EditRider />} />
           </Routes>
