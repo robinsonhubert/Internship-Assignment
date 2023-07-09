@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import './App.css';
 import { useState, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -7,7 +6,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 //components
 import NavBar from './components/NavBar';
-import Home from './components/Home';
 import AllRiders from './components/AllRiders';
 import AddRider from './components/AddRider';
 import EditRider from './components/EditRider';
