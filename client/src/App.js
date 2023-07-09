@@ -38,7 +38,7 @@ function App() {
           rtl={false}
           pauseOnHover
           pauseOnFocusLoss={false}
-          className="custom-toast" // Add the custom class here
+          className="custom-toast"
           draggable
 
         />
@@ -47,7 +47,6 @@ function App() {
         ) : (
           <Routes>
             <Route path='/' element={<AllRiders />} />
-            {/* <Route path='/all' element={<AllRiders />} /> */}
             <Route path='/add' element={<AddRider />} />
             <Route path='/edit/:id' element={<EditRider />} />
           </Routes>

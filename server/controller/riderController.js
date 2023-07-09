@@ -3,6 +3,9 @@ const Rider = require("../models/riderModel");
 const cloudinary = require("../utils/cloudinary");
 const fs = require("fs");
 
+
+//Controller for the Get all Riders
+
 const getAllRiders = async (req, res) => {
     const { page = 1, limit = 10, Name, Email, Id } = req.query;
     const query = {};
@@ -38,6 +41,9 @@ const getAllRiders = async (req, res) => {
     // const riders = await Rider.find({}).exec();
     // res.status(200).json(riders)
 }
+
+//Controller for the Add a Rider
+
 const addRider = async (req, res) => {
     try {
         //upload the image to the cloudinary
@@ -61,6 +67,9 @@ const addRider = async (req, res) => {
         res.status(500).json({ error: "An error occurred while adding a rider." });
     }
 }
+
+//Controller for the Edit a Rider
+
 const editRider = async (req, res) => {
     try {
         let rider = await Rider.findById(req.params.id).exec();
@@ -100,6 +109,7 @@ const editRider = async (req, res) => {
     }
 };
 
+// Controller for Delete the Rider
 const deleteRider = async (req, res) => {
     try {
         const riderId = req.params.id;
@@ -122,6 +132,7 @@ const deleteRider = async (req, res) => {
     }
 };
 
+//Controller for Get a Specified Rider
 const getSingleRider = async (req, res) => {
     try {
         let rider = await Rider.findById(req.params.id).exec();
