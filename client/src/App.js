@@ -1,6 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 import { useState, useEffect } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 //components
 import NavBar from './components/NavBar';
@@ -28,6 +31,19 @@ function App() {
     <BrowserRouter>
       <NavBar />
       <div style={{ marginBottom: '150px' }} className="background">
+        <ToastContainer
+          position="bottom-left"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnHover
+          pauseOnFocusLoss={false}
+          className="custom-toast" // Add the custom class here
+          draggable
+
+        />
         {isLoading ? (
           <Loader />
         ) : (

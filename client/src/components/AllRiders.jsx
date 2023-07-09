@@ -7,6 +7,8 @@ import { Image } from 'mui-image'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import Loader from "../Loader/Loader";
+import {toast } from "react-toastify";
+
 
 const Btn = styled(Button)`
     background: transparant;
@@ -50,6 +52,7 @@ const AllRiders = () => {
             }
         } catch (error) {
             console.error("Error retrieving riders:", error);
+            toast.error("Error retrieving riders. Please try again."); // Display error message using Toastify
         }
     };
 
@@ -69,10 +72,13 @@ const AllRiders = () => {
                 // Remove the deleted rider from the state
                 setRiders(prevRiders => prevRiders.filter(rider => rider._id !== id));
                 setIsLoading(false); // Stop the loader after a delay
+                toast.success("Rider deleted successfully."); // Display success message using Toastify
             }, 2000); // Adjust the delay time as needed
         }
         } catch (error) {
             console.error("Error deleting rider:", error);
+            toast.error("Error deleting rider. Please try again."); // Display error message using Toastify
+
         }
     };
 
@@ -105,6 +111,7 @@ const AllRiders = () => {
             }
         } catch (error) {
             console.error('Error searching riders:', error);
+            toast.error("Error searching riders. Please try again."); // Display error message using Toastify
         }
     };
 

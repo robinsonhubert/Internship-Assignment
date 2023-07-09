@@ -26,7 +26,7 @@ const getAllRiders = async (req, res) => {
         };
 
         const riders = await Rider.find(query)
-            .sort({ Id: 1 }) 
+            .sort({ Id: 1 })
             .skip((options.page - 1) * options.limit)
             .limit(options.limit)
             .exec();
@@ -58,11 +58,16 @@ const addRider = async (req, res) => {
         res.status(201).json(rider)
     } catch (error) {
         console.log(error);
+        res.status(500).json({ error: "An error occurred while adding a rider." });
     }
 }
 const editRider = async (req, res) => {
     try {
         let rider = await Rider.findById(req.params.id).exec();
+
+        if (!rider) {
+            return res.status(404).json({ error: "Rider not found" });
+        }
 
         // delete the image from the cloudinary
         await cloudinary.uploader.destroy(rider.cloudinary_id);
@@ -88,10 +93,10 @@ const editRider = async (req, res) => {
         if (req.file) {
             fs.unlinkSync(req.file.path);
         }
-
         res.status(200).json(rider);
     } catch (error) {
         console.log(error);
+        res.status(500).json({ error: "An error occurred while editing the rider." });
     }
 };
 
@@ -117,17 +122,18 @@ const deleteRider = async (req, res) => {
     }
 };
 
-module.exports = { deleteRider };
-
-
 const getSingleRider = async (req, res) => {
     try {
         let rider = await Rider.findById(req.params.id).exec();
-        res.status(200).json(rider)
+        if (!rider) {
+            return res.status(404).json({ error: "Rider not found" });
+        }
+        res.status(200).json(rider);
     } catch (error) {
-        console.log(error);
+        console.error(error);
+        res.status(500).json({ error: "An error occurred while retrieving the rider." });
     }
-}
+};
 
 module.exports = {
     getAllRiders,
